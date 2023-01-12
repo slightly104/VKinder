@@ -4,14 +4,12 @@ from os import path, mkdir
 
 db_path = path.join(f"{path.abspath('db')}", "couple_db.db")
 
-
-def create_folder():
+def create_folder() -> None:
     """Создаёт папку для БД"""
     if not path.isdir("db"):
         mkdir("db")
 
-
-def create_db():
+def create_db() -> None:
     """Создаёт таблицу БД, если её нет"""
     create_folder()
     with sqlite3.connect(f"{db_path}") as conn:
@@ -25,8 +23,7 @@ def create_db():
         """)
         conn.commit()
 
-
-def check_exist(couple_id):
+def check_exist(couple_id: int) -> bool:
     """Проверяет добавлена ли пара в БД"""
     with sqlite3.connect(f"{db_path}") as conn:
         cur = conn.cursor()
@@ -36,9 +33,8 @@ def check_exist(couple_id):
         if cur.fetchone() is None:
             return False
         return True
-     
 
-def add_couple(couple_id):
+def add_couple(couple_id: int) -> None:
     """Добавляет подходящую пару в БД"""
 
     with sqlite3.connect(f"{db_path}") as conn:
@@ -50,11 +46,10 @@ def add_couple(couple_id):
         conn.commit()
 
 
-#### ниже функции с заделом на будущее ####
+# Ниже функции с заделом на будущее
 
-def add_to_black_list(couple_id):
+def add_to_black_list(couple_id) -> None:
     """Добавляет пару в черный список"""
-
     with sqlite3.connect(f"{db_path}") as conn:
         cur = conn.cursor()
         cur.execute("""
@@ -62,10 +57,8 @@ def add_to_black_list(couple_id):
         """, (1, couple_id))
         conn.commit()
 
-
-def add_to_favorite(couple_id):
+def add_to_favorite(couple_id) -> None:
     """Добавляет пару в избранное"""
-
     with sqlite3.connect(f"{db_path}") as conn:
         cur = conn.cursor()
         cur.execute("""
